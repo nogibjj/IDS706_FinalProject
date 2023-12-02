@@ -1,12 +1,20 @@
-from main import *
+import pytest
+from fastapi.testclient import TestClient
+from main import app
 
-def test_func():
-    df = loadDf("https://people.sc.fsu.edu/~jburkardt/data/csv/oscar_age_female.csv")
-    descriptive_df = describeData(df)
-    assert isinstance(df, pd.DataFrame)
-    assert 'max' in descriptive_df.index
-    assert df.shape[0]==89
-    print(descriptive_df)
-    print(df)
-    plotData(df)
-test_func()
+client = TestClient(app)
+
+def test_read_main():
+    response = client.get("/")
+
+    assert response.json() == {"Tips:" : "This app can help you categorize sentiments into negative, neutral, or positive categories."}
+
+def test_process_text():
+    text_data = "This is a positive statement."
+    response = client.post("/process_text?text={}".format(text_data))
+    assert "Raw Text" in response.json()
+    assert "Categories" in response.json()
+    
+    
+test_read_main()
+test_process_text()
