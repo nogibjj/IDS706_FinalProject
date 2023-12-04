@@ -10,5 +10,17 @@ format:
 
 lint:
 	pylint --disable=R,C --ignore-patterns=test_.*?py *.py
-		
+# pre train the model for the microservice
+trainModel:
+	ipython -c "%run model_training/trainmodel.ipynb"
+# clear docker space
+clearDocker:
+	bash clear_docker.sh
+# push docker image to aws container registry
+pushDocker:
+	bash push_awsimage.sh
+# test the lambda function 
+testLambda:
+	bash test_lambda.sh
+
 all: install lint format test 

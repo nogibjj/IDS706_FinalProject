@@ -10,13 +10,7 @@ fastapi==0.85.0
 uvicorn==0.18.3
 #data
 pandas 
-numpy == 1.26.2
-#plot
-nltk
-matplotlib
 scikit-learn
-tensorflow
-missingno
 keras
 torch
-wordcloud
+tensorflow
