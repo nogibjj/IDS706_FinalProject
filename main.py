@@ -11,6 +11,7 @@ import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 import os
 import joblib
 from keras.models import load_model
+
 def loadVectorizer(vectorizer_path):
     loaded_count_vec = joblib.load(vectorizer_path) 
     return loaded_count_vec
