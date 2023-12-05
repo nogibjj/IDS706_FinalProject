@@ -166,7 +166,27 @@ I got a shell script for lambda test :
   
   36.63126355319651 requests per second
 
-  I think its due to the aws credit limits, the service didn't achieve 10000 successful requests per second. We may upgrade our service through increasing the concurrency in aws:
+  <img width="675" alt="image" src="https://github.com/nogibjj/IDS706_FinalProject/assets/108935314/a624182b-9d3a-4d05-a665-6a5c5a3755b5">
+  
+  10000 Requests has 7110 successful cases and 2890 failed cases, success rate 0.711
+  
+  Total time elapsed: 180.69083070755005 seconds
+  
+  55.3431513975665 requests per second
+  
+the service didn't achieve 10000 successful requests per second. I think its due to several reasons:
+  
+  * The aws concurrency limits.
+    
+  * python scripts concurrent requests delay: creating 10000 threads to send testing requests costs a lot
+    
+  * our model takes much time for data processing and prediction. Its kinda not a "microservice"
+    
+    
+    
+    
+  
+  We may upgrade our service through increasing the concurrency in aws:
   <img width="1631" alt="image" src="https://github.com/nogibjj/IDS706_FinalProject/assets/108935314/d0e66141-3858-4053-8648-88a723ed7272">
 
 # Run
