@@ -1,6 +1,8 @@
 install:
 	pip install --upgrade pip &&\
-		pip install -r requirements.txt
+		pip install -r requirements.txt &&\
+			pip install anyio==3.5 &&\
+			pip install --upgrade tensorflow
 
 test:
 	python -m pytest -vv --cov=main test_*.py
