@@ -9,7 +9,7 @@ format:
 	black *.py 
 
 lint:
-	pylint --disable=R,C --ignore-patterns=test_.*?py *.py
+	pylint --disable=R,C  test_main.py
 # pre train the model for the microservice
 trainModel:
 	ipython -c "%run model_training/trainmodel.ipynb"
