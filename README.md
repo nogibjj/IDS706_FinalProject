@@ -1,9 +1,10 @@
 # Final Project 
 [![CI](https://github.com/nogibjj/IDS706_FinalProject/actions/workflows/cicd.yml/badge.svg)](https://github.com/nogibjj/IDS706_FinalProject/actions/workflows/cicd.yml)
 # Overview
-This project demonstrates how to deploy a microservice using pre-trained NLP model to categorize a statement to negtive, positive or neutral categories. This project is deployed through AWS Lambda, a serverless framework.
+This project showcases an advanced microservice using a pre-trained Natural Language Processing (NLP) model, deployed via AWS Lambda in a serverless architecture. It specializes in analyzing textual data, categorizing statements into negative, positive, or neutral sentiments. 
 
-# Model
+
+# I. NLP Model
 
 ## model_training
   ### data source
@@ -18,11 +19,11 @@ This project demonstrates how to deploy a microservice using pre-trained NLP mod
 
   This directory has the pre-trained model result with the best performance
   
-## vectorizer
+## 3.vectorizer
 
   This directory keeps the data preprocessing model based on the dataset we used.
 
-# Microservice
+# II.Microservice
 ## Intro
 
 This service will load the pre trained model to help users categorize the input statement. We utilized fastapi library to achieve this function and logging library to log the info. 
@@ -56,22 +57,26 @@ The response should be in json format, something like :
 
  {"Raw Text": <user input>, "Categories": <netural/positive/negtive>}
 
-# Distroless Container Image
+# III.Containerization with Distroless Docker Image
 
 <img width="593" alt="image" src="https://github.com/nogibjj/IDS706_FinalProject/assets/108935314/20bce4a4-db93-45be-a14e-9916c4370d05">
 
-To build an image:
+## Building the Container Image
+To encapsulate our microservice in a Distroless container:
 ```
 docker build -t myapp .
 ```
+This command builds a Docker image named 'myapp' using the Dockerfile in the current directory. The Dockerfile is configured to leverage Distroless images, ensuring that the resulting container is lightweight and secure.
 
-Run through docker image:
+## Running the Microservice in a Container
+Once the image is built, it can be run using the following command:
 
-```
+```bash
 docker run -p 8080:8080 myapp
 ```
+This command starts a container instance of 'myapp', mapping the container’s port 8080 to the host’s port 8080. This allows the microservice to be accessed via the host machine on port 8080, facilitating easy integration and testing.
 
-# Deploy in AWS Lambda
+# IV.Deploy in AWS Lambda
 
 ## 1. Update dockerfile to adapt to Lambda environment
 
@@ -133,7 +138,7 @@ In case some apps take longer time to startup or need larger memory space.
 <img width="1500" alt="image" src="https://github.com/nogibjj/IDS706_FinalProject/assets/108935314/d7609760-bd84-4307-b593-8aec604560f3">
 
 4. A simple test
-![Alt text](image.png)
+![Alt text](./images/image.png)
 
 ## 4. Test using AWS CLI
 ```
@@ -149,8 +154,43 @@ I got a shell script for lambda test :
 
 <img width="477" alt="image" src="https://github.com/nogibjj/IDS706_FinalProject/assets/108935314/750867e6-37e8-45e0-baea-6ae9578bcdd6">
 
+## 5. Infrastructure as Code (IaC) Integration
 
-# Load Test
+To further streamline our deployment process and ensure consistent, repeatable setups, we integrate Infrastructure as Code (IaC) practices using AWS SAM (Serverless Application Model). AWS SAM is a powerful IaC tool that allows us to define, manage, and deploy our AWS infrastructure in a systematic and predictable manner.
+
+#### Defining the Infrastructure
+With AWS SAM, we define our Lambda functions, API Gateway, and other related AWS resources in a SAM template. This template is a YAML configuration file that describes all the AWS resources needed for our project.
+
+```yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  MyLambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      CodeUri: .
+      ...
+```
+This SAM template outlines the structure and settings of our Lambda function, ensuring that all the cloud resources are provisioned correctly and consistently.
+
+#### Deploying with AWS SAM
+Once our SAM template is set up, deploying our infrastructure becomes as simple as running a few commands:
+
+```bash
+sam build
+sam deploy --guided
+```
+
+These commands build and deploy our AWS infrastructure as defined in the SAM template, including our Lambda function and any other required resources.
+
+#### Advantages of Using AWS SAM
+- **Consistency:** Ensures that the infrastructure is deployed in a consistent manner, avoiding manual errors.
+- **Version Control:** The SAM template can be version-controlled along with the application code, enhancing collaboration and tracking.
+- **Automation:** Simplifies and automates the deployment process, making it faster and more reliable.
+
+# V.Load Test
 
 * using python concurrency library to simulate concurrent requests to the AWS Lambda function
   <img width="1165" alt="image" src="https://github.com/nogibjj/IDS706_FinalProject/assets/108935314/127906e5-ae2f-4313-a222-8227539bcad8">
@@ -182,14 +222,11 @@ the service didn't achieve 10000 successful requests per second. I think its due
     
   * our model takes much time for data processing and prediction. Its kinda not a "microservice"
     
-    
-    
-    
-  
   We may upgrade our service through increasing the concurrency in aws:
   <img width="1631" alt="image" src="https://github.com/nogibjj/IDS706_FinalProject/assets/108935314/d0e66141-3858-4053-8648-88a723ed7272">
 
-# Run
+# VI.Build and Deployment Scripts
+This section details the various shell scripts used for managing and deploying our project:
 There are several shell scripts.
 
 `make install`: Install dependencies
@@ -208,10 +245,55 @@ There are several shell scripts.
 
 `make testLambda`: Testing services deployed in Lambda
 
+# VII. Architectural Diagram
+The following diagram provides a comprehensive overview of our project's architecture. It highlights the key components and their interactions, offering a clear visual representation of the system's design. This includes the **NLP Model Processing Unit** , the **Testing and Validation** Unit, the **Microservice Architecture**, and details on **Containerization and Deployment**, and **AWS CLI Integration**. Each element plays a vital role in the functionality and efficiency of our application.
+<div style="text-align:center;">
+    <img src="./images/diagram.PNG" alt="Alt text" width="70%" height="70%">
+</div>
 
-# Video Demo:
+# VIII. Quantitative Assessment
+
+This section provides a quantitative assessment of our system's reliability and stability, utilizing key data science metrics to analyze its performance.
+
+## Load Test Overview
+We conducted comprehensive load testing using a Python concurrency library, simulating concurrent requests to our AWS Lambda function. This test aimed to assess the system's response under varying levels of load.
+
+## Test Results and Analysis
+1. **1000 Requests Test**
+   - Successful Requests: 938
+   - Failed Requests: 62
+   - Success Rate: 93.8%
+   - Total Time Elapsed: 27.30 seconds
+   - Requests per Second: 36.63
+
+   This test showed a high success rate, indicating strong system reliability at a moderate load level. The average latency per request was approximately 0.73 seconds.
+
+2. **10000 Requests Test**
+   - Successful Requests: 7110
+   - Failed Requests: 2890
+   - Success Rate: 71.1%
+   - Total Time Elapsed: 180.69 seconds
+   - Requests per Second: 55.34
+
+   At a higher load, the success rate dropped, suggesting scalability limits under extreme conditions. The average latency per request increased to 1.28 seconds, indicating a performance bottleneck.
+
+## Contributing Factors to Performance
+- **AWS Concurrency Limits:** AWS Lambda has inherent concurrency limits which may have contributed to the decreased success rate at higher request volumes.
+- **Concurrent Request Delays:** The overhead of creating and managing a large number of threads in the Python script could have affected performance.
+- **Model Processing Time:** The time taken for data processing and prediction by our NLP model was significant, impacting the overall response time.
+
+## Proposed Improvements
+- **Increasing AWS Concurrency:** Adjusting AWS settings to allow higher concurrency could improve handling of larger request volumes.
+- **Optimizing Python Scripts:** Refining our script to manage concurrency more efficiently could enhance performance.
+- **Model Optimization:** Streamlining our NLP model for faster processing could reduce response times and increase throughput.
+
+## Conclusion
+The quantitative analysis of our system underlines its robustness in handling moderate request volumes efficiently. However, for high-volume scenarios, some adjustments and optimizations are required to maintain performance and reliability.
+
+# IX. Teamwork Reflection
+# X. Video Demo:
 https://youtu.be/4UqS68EEPa4
-# Some advice:
+# XI. Some advice:
 * Double check your account configure before utilizing lambda apps
 * Attention to dockerfile configure(aws lambda has its unique environment) && Test your image before uploading (takes much time)
   Use the following command to test:
