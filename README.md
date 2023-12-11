@@ -225,25 +225,34 @@ the service didn't achieve 10000 successful requests per second. I think its due
   We may upgrade our service through increasing the concurrency in aws:
   <img width="1631" alt="image" src="https://github.com/nogibjj/IDS706_FinalProject/assets/108935314/d0e66141-3858-4053-8648-88a723ed7272">
 
-# VI.Build and Deployment Scripts
-This section details the various shell scripts used for managing and deploying our project:
-There are several shell scripts.
+## VI. CI/CD Pipeline
+We have set up a CI/CD pipeline to automate the following tasks:
 
-`make install`: Install dependencies
+- Building and testing the application.
+- Formatting and linting the code.
+- Pretraining the model for deployment.
+- Pushing the Docker image to AWS ECR.
+- Testing the services deployed in Lambda.
 
-`make lint`: Linting code
+The pipeline is triggered on pushes to the main branch and pull requests to ensure code quality and reliability. It includes the following steps:
 
-`make format`: Formatting code
+1. **Checkout Code**: The pipeline begins by checking out the latest code from the repository.
 
-`make test`: Testing app functions
+2. **Install Dependencies**: The `make install` script is executed to install project dependencies.
 
-`make trainModel`: Pretraining the model for deployment
+3. **Linting**: The `make lint` script checks the code for linting issues.
 
-`make clearDocker`: Clearing docker space 
+4. **Formatting**: The `make format` script formats the code according to our coding standards.
 
-`make pushDocker`: Pushing docker image to AWS ECR
+5. **Testing**: The `make test` script runs tests on the application functions to ensure they work as expected.
 
-`make testLambda`: Testing services deployed in Lambda
+6. **Pretraining Model**: The `make trainModel` script pretrains the model for deployment.
+
+7. **Docker Image**: The `make pushDocker` script builds and pushes the Docker image to AWS ECR.
+
+8. **Lambda Testing**: The `make testLambda` script tests the services deployed in AWS Lambda.
+
+These automated steps ensure that our project is continuously integrated, tested, and deployed with reliability and consistency.
 
 # VII. Architectural Diagram
 The following diagram provides a comprehensive overview of our project's architecture. It highlights the key components and their interactions, offering a clear visual representation of the system's design. This includes the **NLP Model Processing Unit** , the **Testing and Validation** Unit, the **Microservice Architecture**, and details on **Containerization and Deployment**, and **AWS CLI Integration**. Each element plays a vital role in the functionality and efficiency of our application.
@@ -291,8 +300,11 @@ We conducted comprehensive load testing using a Python concurrency library, simu
 The quantitative analysis of our system underlines its robustness in handling moderate request volumes efficiently. However, for high-volume scenarios, some adjustments and optimizations are required to maintain performance and reliability.
 
 # IX. Teamwork Reflection
+There are two reflection reports under the directory "report".
+
 # X. Video Demo:
-https://youtu.be/4UqS68EEPa4
+Here is the demo vide of this project: https://youtu.be/4UqS68EEPa4
+
 # XI. Some advice:
 * Double check your account configure before utilizing lambda apps
 * Attention to dockerfile configure(aws lambda has its unique environment) && Test your image before uploading (takes much time)
