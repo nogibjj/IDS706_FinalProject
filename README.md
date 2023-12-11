@@ -3,6 +3,18 @@
 # Overview
 This project showcases an advanced microservice using a pre-trained Natural Language Processing (NLP) model, deployed via AWS Lambda in a serverless architecture. It specializes in analyzing textual data, categorizing statements into negative, positive, or neutral sentiments. 
 
+# Table of Contents
+- [I. NLP Model](#i-nlp-model)
+- [II. Microservice](#iimicroservice)
+- [III. Containerization with Distroless Docker Image](#iii-containerization-with-distroless-docker-image)
+- [IV. Deploy in AWS Lambda](#iv-deploy-in-aws-lambda)
+- [V. Load Test](#v-load-test)
+- [VI. CI/CD Pipeline](#vi-cicd-pipeline)
+- [VII. Architectural Diagram](#vii-architectural-diagram)
+- [VIII. Quantitative Assessment](#viii-quantitative-assessment)
+- [IX. Teamwork Reflection](#ix-teamwork-reflection)
+- [X. Video Demo](#x-video-demo)
+- [XI. Some Advice](#xi-some-advice)
 
 # I. NLP Model
 
